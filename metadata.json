@@ -1,0 +1,6 @@
+{
+  "name": "PARMAR AI",
+  "description": "Personal Gujarati and English AI voice assistant with DIAMOND wake word, phone controls, and local offline memory.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

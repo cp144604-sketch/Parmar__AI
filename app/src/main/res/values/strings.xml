@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PARMAR AI</string>
+    <string name="device_admin_label">PARMAR AI Screen Lock</string>
+    <string name="device_admin_description">Allows PARMAR AI to lock the screen only when you explicitly request it via voice or button.</string>
+    <string name="voice_service_channel_name">PARMAR Voice Listener</string>
+    <string name="voice_service_channel_desc">Shows when PARMAR AI is actively listening for your wake word DIAMOND or voice commands.</string>
+    <string name="reminder_channel_name">PARMAR Reminders</string>
+    <string name="reminder_channel_desc">Local reminder alerts scheduled by PARMAR AI.</string>
+    <string name="action_stop_listening">Stop Listening</string>
+    <string name="orb_content_description">PARMAR AI voice activation orb</string>
+</resources>

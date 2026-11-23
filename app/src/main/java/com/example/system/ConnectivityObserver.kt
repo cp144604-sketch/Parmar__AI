@@ -1,0 +1,52 @@
+package com.example.system
+
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
+class ConnectivityObserver(context: Context) {
+    private val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    private val _isOnline = MutableStateFlow(checkCurrentConnectivity())
+    val isOnline: StateFlow<Boolean> = _isOnline.asStateFlow()
+
+    private val callback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            _isOnline.value = checkCurrentConnectivity()
+        }
+
+        override fun onLost(network: Network) {
+            _isOnline.value = checkCurrentConnectivity()
+        }
+
+        override fun onCapabilitiesChanged(network: Network, capabilities: NetworkCapabilities) {
+            _isOnline.value = checkCurrentConnectivity()
+        }
+    }
+
+    init {
+        runCatching {
+            val request = NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build()
+            connectivityManager.registerNetworkCallback(request, callback)
+        }
+    }
+
+    private fun checkCurrentConnectivity(): Boolean {
+        val network = connectivityManager.activeNetwork ?: return false
+        val caps = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+            caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+    }
+
+    fun refresh() {
+        _isOnline.value = checkCurrentConnectivity()
+    }
+}
